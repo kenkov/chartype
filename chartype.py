@@ -76,7 +76,6 @@ class Chartype(object):
         elif self.is_touten(st):
             return 'TOUTEN'
 
-
     def _is_type(self, typ, st, start, end):
         '''
         '''
@@ -84,7 +83,6 @@ class Chartype(object):
             return unicodedata.name(st)[start: end] == typ
         except TypeError as ex:
             raise CharException(st) from ex
-
 
     def is_hiragana(self, st):
         u"""
@@ -338,7 +336,6 @@ class Chartype(object):
         '''
         return self._typename(st1) == self._typename(st2)
 
-
     def hiragana2katakana(self, char):
         """ひらがなをカタカナに変換する"""
         if not self.is_hiragana(char):
@@ -346,7 +343,6 @@ class Chartype(object):
 
         name = re.sub(r"^HIRAGANA\s", "KATAKANA ", unicodedata.name(char))
         return unicodedata.lookup(name)
-
 
     def katakana2hiragana(self, char):
         """カタカナを平仮名に変換する"""
@@ -356,7 +352,6 @@ class Chartype(object):
         name = re.sub(r"^KATAKANA\s", "HIRAGANA ", unicodedata.name(char))
         return unicodedata.lookup(name)
 
-
     def half2full(self, char):
         u"""半角カタカナ char を全角カタカナに変換する"""
         if not self.is_halfwidthkatakana(char):
@@ -365,14 +360,25 @@ class Chartype(object):
         name = re.sub(r"^HALFWIDTH\s", "", unicodedata.name(char))
         return unicodedata.lookup(name)
 
-
     def full2half(self, char):
         u"""全角カタカナ char を半角カタカナに変換する"""
         if not self.is_katakana(char):
             raise CharTypeException(char)
 
-        name = unicodedata.name(char)
-        return unicodedata.lookup("HALFWIDTH " + name)
+        # voiced and semi-voiced sound mark
+        vm_dic = {
+            "ガ": "ｶ", "ギ": "ｷ", "グ": "ｸ", "ゲ": "ｹ", "ゴ": "ｺ",
+            "ザ": "ｻ", "ジ": "ｼ", "ズ": "ｽ", "ゼ": "ｾ", "ゾ": "ｿ",
+            "ダ": "ﾀ", "ヂ": "ﾁ", "ヅ": "ﾂ", "デ": "ﾃ", "ド": "ﾄ",
+            "バ": "ﾊ", "ビ": "ﾋ", "ブ": "ﾌ", "ベ": "ﾍ", "ボ": "ﾎ",
+            "パ": "ﾊ", "ピ": "ﾋ", "プ": "ﾌ", "ペ": "ﾍ", "ポ": "ﾎ",
+        }
+
+        if char in vm_dic:
+            return "{}ﾞ".format(vm_dic[char])
+        else:
+            return unicodedata.lookup(
+                "HALFWIDTH {}".format(unicodedata.name(char)))
 
 
 if __name__ == '__main__':
