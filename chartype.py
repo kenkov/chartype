@@ -1,21 +1,6 @@
 #! /usr/bin/env python
 # coding:utf-8
 
-'''
-===============================
-chartype.py
-===============================
-
-公開
-=====
-
-`github <https://github.com/kenkov/chartype.py>`_ で公開しています。
-
-ドキュメント
-====================
-
-Unicode 型の文字列がどの種類の文字列(ひらがな、カタカナ、漢字など) なのかを判定するモジュール
-'''
 
 import unicodedata
 import re
