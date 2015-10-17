@@ -268,6 +268,10 @@ class Chartype(object):
         '''
         return self.is_kuten(st) or self.is_touten(st)
 
+    def is_mark(self, st: str) -> bool:
+        ex_set = {"！", "？"}
+        return st in ex_set
+
     def is_nihongo(self, st: str) -> bool:
         u'''
         日本語かどうかを判定する
@@ -286,7 +290,9 @@ class Chartype(object):
             self.is_halfwidthkatakana(st) or \
             self.is_kanji(st) or \
             self.is_kuten(st) or \
-            self.is_touten(st)
+            self.is_touten(st) or \
+            self.is_ascii(st) or \
+            self.is_mark(st)
 
     def otherwise(self, st: str) -> bool:
         u"""
