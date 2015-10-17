@@ -8,20 +8,20 @@ import re
 
 class CharException(TypeError):
 
-    def __init__(self, sent):
+    def __init__(self, sent: str) -> None:
         self.sent = sent
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "need a single Unicode character as parameter\
 : {}".format(self.sent)
 
 
 class CharTypeException(TypeError):
 
-    def __init__(self, sent):
+    def __init__(self, sent: str) -> None:
         self.sent = sent
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "need a halfwidth katakana character\
 as a parameter: {}".format(self.sent)
 
@@ -31,10 +31,10 @@ class Chartype(object):
     Chartype クラス
 
     '''
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
-    def _typename(self, st):
+    def _typename(self, st: str) -> str:
         '''
         :param st: ユニコード型の文字列
         :type st: ユニコード型
@@ -61,7 +61,13 @@ class Chartype(object):
         elif self.is_touten(st):
             return 'TOUTEN'
 
-    def _is_type(self, typ, st, start, end):
+    def _is_type(
+            self,
+            typ: str,
+            st: str,
+            start: int,
+            end: int
+    ) -> bool:
         '''
         '''
         try:
@@ -69,7 +75,7 @@ class Chartype(object):
         except TypeError as ex:
             raise CharException(st) from ex
 
-    def is_hiragana(self, st):
+    def is_hiragana(self, st: str) -> bool:
         u"""
         ひらがなかどうかを判定する
 
@@ -84,7 +90,7 @@ class Chartype(object):
         """
         return self._is_type('HIRAGANA', st, 0, 8)
 
-    def is_katakana(self, st):
+    def is_katakana(self, st: str) -> bool:
         u"""
         カタカナかどうかを判定する
 
@@ -99,7 +105,7 @@ class Chartype(object):
         """
         return self._is_type('KATAKANA', st, 0, 8)
 
-    def is_halfwidthkatakana(self, st):
+    def is_halfwidthkatakana(self, st: str) -> bool:
         u"""
         半角カタカナかどうかを判定する
 
@@ -114,7 +120,7 @@ class Chartype(object):
         """
         return self._is_type('HALFWIDTH KATAKANA', st, 0, 18)
 
-    def is_kanji(self, st):
+    def is_kanji(self, st: str) -> bool:
         u"""
         漢字かどうかを判定する
 
@@ -129,7 +135,7 @@ class Chartype(object):
         """
         return self._is_type('CJK', st, 0, 3)
 
-    def is_latinsmall(self, st):
+    def is_latinsmall(self, st: str) -> bool:
         u"""
         [a-z]* かどうかを判定する
 
@@ -144,7 +150,7 @@ class Chartype(object):
         """
         return self._is_type('LATIN SMALL', st, 0, 11)
 
-    def is_latincapital(self, st):
+    def is_latincapital(self, st: str) -> bool:
         u"""
         [A-Z]* かどうかを判定する
 
@@ -159,7 +165,7 @@ class Chartype(object):
         """
         return self._is_type('LATIN CAPITAL', st, 0, 13)
 
-    def is_digit(self, st):
+    def is_digit(self, st: str) -> bool:
         u"""
         数値かどうかを判定する
 
@@ -174,7 +180,7 @@ class Chartype(object):
         """
         return self._is_type('DIGIT', st, 0, 5)
 
-    def is_kuten(self, st):
+    def is_kuten(self, st: str) -> bool:
         u"""
         『。』または『．』に一致するかどうかを判定する
 
@@ -191,7 +197,7 @@ class Chartype(object):
             self._is_type('FULLWIDTH FULL STOP', st, 0, 19) or \
             self._is_type('FULL STOP', st, 0, 9)
 
-    def is_touten(self, st):
+    def is_touten(self, st: str) -> bool:
         u"""
         『、』または『．』に一致するかどうかを判定する
 
@@ -209,7 +215,7 @@ class Chartype(object):
             self._is_type('COMMA', st, 0, 5)
 
     # 上を組み合わせて新しいメソッドをつくる
-    def is_latin(self, st):
+    def is_latin(self, st: str) -> bool:
         '''
         ラテン文字列かどうかを判定する
 
@@ -226,7 +232,7 @@ class Chartype(object):
         '''
         return self.is_latinsmall(st) or self.is_latincapital(st)
 
-    def is_ascii(self, st):
+    def is_ascii(self, st: str) -> bool:
         '''
         アスキー文字列かどうかを判定する
 
@@ -243,7 +249,7 @@ class Chartype(object):
         '''
         return self.is_digit(st) or self.is_latin(st)
 
-    def is_kutouten(self, st):
+    def is_kutouten(self, st: str) -> bool:
         u'''
         句読点かどうかを判定する
 
@@ -262,7 +268,7 @@ class Chartype(object):
         '''
         return self.is_kuten(st) or self.is_touten(st)
 
-    def is_nihongo(self, st):
+    def is_nihongo(self, st: str) -> bool:
         u'''
         日本語かどうかを判定する
 
@@ -282,7 +288,7 @@ class Chartype(object):
             self.is_kuten(st) or \
             self.is_touten(st)
 
-    def otherwise(self, st):
+    def otherwise(self, st: str) -> bool:
         u"""
         上の関数でTrueになる文字以外の文字
 
@@ -305,7 +311,7 @@ class Chartype(object):
                     self.is_kuten(st) or
                     self.is_touten(st))
 
-    def is_sametype(self, st1, st2):
+    def is_sametype(self, st1: str, st2: str) -> bool:
         u'''
         st1 とst2 が同じ文字列かどうかを判定する
 
@@ -321,7 +327,7 @@ class Chartype(object):
         '''
         return self._typename(st1) == self._typename(st2)
 
-    def hiragana2katakana(self, char):
+    def hiragana2katakana(self, char: str) -> str:
         """ひらがなをカタカナに変換する"""
         if not self.is_hiragana(char):
             raise CharTypeException(char)
@@ -329,7 +335,7 @@ class Chartype(object):
         name = re.sub(r"^HIRAGANA\s", "KATAKANA ", unicodedata.name(char))
         return unicodedata.lookup(name)
 
-    def katakana2hiragana(self, char):
+    def katakana2hiragana(self, char: str) -> str:
         """カタカナを平仮名に変換する"""
         if not self.is_katakana(char):
             raise CharTypeException(char)
@@ -337,7 +343,7 @@ class Chartype(object):
         name = re.sub(r"^KATAKANA\s", "HIRAGANA ", unicodedata.name(char))
         return unicodedata.lookup(name)
 
-    def half2full(self, char):
+    def half2full(self, char: str) -> str:
         u"""半角カタカナ char を全角カタカナに変換する"""
         if not self.is_halfwidthkatakana(char):
             raise CharTypeException(char)
@@ -345,7 +351,7 @@ class Chartype(object):
         name = re.sub(r"^HALFWIDTH\s", "", unicodedata.name(char))
         return unicodedata.lookup(name)
 
-    def full2half(self, char):
+    def full2half(self, char: str) -> str:
         u"""全角カタカナ char を半角カタカナに変換する"""
         if not self.is_katakana(char):
             raise CharTypeException(char)
