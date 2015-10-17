@@ -26,7 +26,7 @@ class CharTypeException(TypeError):
 as a parameter: {}".format(self.sent)
 
 
-class Chartype(object):
+class Chartype:
     u'''
     Chartype クラス
 
