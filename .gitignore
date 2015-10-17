@@ -2,3 +2,4 @@
 progressline.egg-info/
 dist/
 build/
+setup.py
