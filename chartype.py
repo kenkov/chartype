@@ -378,6 +378,26 @@ class Chartype:
                 "HALFWIDTH {}".format(unicodedata.name(char)))
 
 
+CharType = Chartype
+
+
+class StrType:
+    def __init__(self):
+        self.ct = CharType()
+
+    def is_nihongo(self, st: str):
+        try:
+            # CharType が
+            #   ValueError: no such name
+            # をだす可能性がある
+            return all(
+                self.ct.is_nihongo(char)
+                for char in st
+            )
+        except:
+            return False
+
+
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
